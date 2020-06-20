@@ -14,6 +14,17 @@ pub fn cubed<T: Mul + Mul<Output = T> + Copy>(num: T) -> T {
     squared(num) * num
 }
 
+/// 引数`num`の`index`乗した値を返却します。
+/// 
+pub fn power<T: Mul + Mul<Output = T> + Copy>(num: T, index: u32) -> T {
+    match index {
+        i if i == 1 => num,
+        i if i % 2 == 0 => squared(power(num, i / 2)),
+        i if i % 2 == 1 => squared(power(num, i / 2)) * num,
+        _ => num,
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -26,5 +37,12 @@ mod tests {
     #[test]
     fn cubed_test() {
         assert_eq!(cubed(2), 8);
+    }
+
+    #[test]
+    fn power_test() {
+        assert_eq!(power(2, 4), 16);
+        assert_eq!(power(2, 10), 1024);
+        assert_eq!(power(2, 24), 16777216);
     }
 }
