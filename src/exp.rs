@@ -1,22 +1,31 @@
 use std::ops::Mul;
 
 /// 引数の二乗を返却します。
-/// 
-/// 
-pub fn squared<T: Mul + Mul<Output = T> + Copy>(num: T) -> T {
+///
+///
+pub fn squared<T>(num: T) -> T
+where
+    T: Mul + Mul<Output = T> + Copy,
+{
     num * num
 }
 
 /// 引数の三乗を返却します。
-/// 
-/// 
-pub fn cubed<T: Mul + Mul<Output = T> + Copy>(num: T) -> T {
+///
+///
+pub fn cubed<T>(num: T) -> T
+where
+    T: Mul + Mul<Output = T> + Copy,
+{
     squared(num) * num
 }
 
 /// 引数`num`の`index`乗した値を返却します。
-/// 
-pub fn power<T: Mul + Mul<Output = T> + Copy>(num: T, index: u32) -> T {
+///
+pub fn power<T>(num: T, index: u32) -> T
+where
+    T: Mul + Mul<Output = T> + Copy,
+{
     match index {
         i if i == 1 => num,
         i if i % 2 == 0 => squared(power(num, i / 2)),
