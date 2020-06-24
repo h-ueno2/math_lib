@@ -3,14 +3,13 @@ extern crate num_traits;
 pub mod exp;
 pub mod fraction;
 
-use num_traits::Zero;
+use num_traits::Num;
 use std::cmp::PartialOrd;
-use std::ops::Rem;
 
 /// 引数`a`と`b`の最大公約数を返却します。
 /// 
 pub fn gratest_common_factor<T>(a: T, b: T) -> T 
-where T: Zero + PartialOrd + Rem<Output = T> + Copy
+where T: Num + PartialOrd + Copy
 {
     let big_num = if a >= b { a } else { b };
     let small_num = if a >= b { b } else { a };

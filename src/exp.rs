@@ -1,11 +1,11 @@
-use std::ops::Mul;
+use num_traits::Num;
 
 /// 引数の二乗を返却します。
 ///
 ///
 pub fn squared<T>(num: T) -> T
 where
-    T: Mul + Mul<Output = T> + Copy,
+    T: Num + Copy,
 {
     num * num
 }
@@ -15,7 +15,7 @@ where
 ///
 pub fn cubed<T>(num: T) -> T
 where
-    T: Mul + Mul<Output = T> + Copy,
+    T: Num + Copy,
 {
     squared(num) * num
 }
@@ -24,7 +24,7 @@ where
 ///
 pub fn power<T>(num: T, index: u32) -> T
 where
-    T: Mul + Mul<Output = T> + Copy,
+    T: Num + Copy,
 {
     match index {
         i if i == 1 => num,
