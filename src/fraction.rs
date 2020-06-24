@@ -1,14 +1,21 @@
 use super::*;
-
-pub struct Fraction {
+use num_traits::Num;
+pub struct Fraction<T>
+where
+    T: Num + Copy,
+{
     /// 分子
-    numerator: u32,
+    numerator: T,
     /// 分母
-    denominator: u32,
+    denominator: T,
 }
 
-impl Fraction {
-    pub fn new(numerator: u32, denominator: u32) -> Self {
+impl<T> Fraction<T> 
+where T: Num + PartialOrd + Copy
+{
+    pub fn new(numerator: T, denominator: T) -> Self 
+    where T: Num
+    {
         Fraction {
             numerator,
             denominator,
@@ -16,7 +23,7 @@ impl Fraction {
     }
 
     /// 約分して初期化します。
-    pub fn new_reduction(numerator: u32, denominator: u32) -> Self {
+    pub fn new_reduction(numerator: T, denominator: T) -> Self {
         let common_factor = gratest_common_factor(numerator, denominator);
         Fraction {
             numerator: numerator / common_factor,
@@ -32,7 +39,9 @@ impl Fraction {
     }
 }
 
-impl std::fmt::Display for Fraction {
+impl<T> std::fmt::Display for Fraction<T> 
+where T: Num + PartialOrd + Copy + std::fmt::Display
+{
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         write!(f, "{}/{}", self.numerator, self.denominator)
     }
