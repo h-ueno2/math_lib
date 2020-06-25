@@ -1,8 +1,10 @@
 use super::*;
 use num_traits::Num;
+use std::fmt::Display;
+
 pub struct Fraction<T>
 where
-    T: Num + Copy,
+    T: Num + Copy + Display,
 {
     /// 分子
     numerator: T,
@@ -11,7 +13,7 @@ where
 }
 
 impl<T> Fraction<T> 
-where T: Num + PartialOrd + Copy
+where T: Num + PartialOrd + Copy + Display
 {
     pub fn new(numerator: T, denominator: T) -> Self 
     where T: Num

@@ -1,4 +1,22 @@
 use num_traits::Num;
+use std::fmt::Display;
+
+/// 累乗を表す構造体
+struct Exponentiation<T>
+where
+    T: Num + Copy + Display,
+{
+    base: T,
+    exponent: T,
+}
+
+impl<T> std::fmt::Display for Exponentiation<T> 
+where T: Num + PartialOrd + Copy + Display
+{
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "{}^{}", self.base, self.exponent)
+    }
+}
 
 /// 引数の二乗を返却します。
 ///
@@ -37,6 +55,16 @@ where
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn display() {
+        let fraction = Exponentiation {
+            base: 3,
+            exponent: 4,
+        };
+        let text = format!("{}", fraction);
+        assert_eq!(text, "3^4");
+    }
 
     #[test]
     fn squared_test() {
