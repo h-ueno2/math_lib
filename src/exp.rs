@@ -2,16 +2,31 @@ use num_traits::Num;
 use std::fmt::Display;
 
 /// 累乗を表す構造体
-struct Exponentiation<T>
+pub struct Exponentiation<T>
 where
     T: Num + Copy + Display,
 {
     base: T,
-    exponent: T,
+    exponent: u32,
 }
 
-impl<T> std::fmt::Display for Exponentiation<T> 
-where T: Num + PartialOrd + Copy + Display
+impl<T> Exponentiation<T> where T: Num + Copy + Display {
+    pub fn new(base: T, exponent: u32) -> Self {
+        Exponentiation {
+            base,
+            exponent,
+        }
+    }
+
+    /// 冪乗を計算した結果の自然数を返却します。
+    pub fn calc_result(&self) -> T {
+        power(self.base, self.exponent)
+    }
+}
+
+impl<T> std::fmt::Display for Exponentiation<T>
+where
+    T: Num + PartialOrd + Copy + Display,
 {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         write!(f, "{}^{}", self.base, self.exponent)
@@ -21,50 +36,71 @@ where T: Num + PartialOrd + Copy + Display
 /// 引数の二乗を返却します。
 ///
 ///
-pub fn squared<T>(num: T) -> T
+pub fn squared<T>(base: T) -> T
 where
     T: Num + Copy,
 {
-    num * num
+    base * base
 }
 
 /// 引数の三乗を返却します。
 ///
 ///
-pub fn cubed<T>(num: T) -> T
+pub fn cubed<T>(base: T) -> T
 where
     T: Num + Copy,
 {
-    squared(num) * num
+    squared(base) * base
 }
 
 /// 引数`num`の`index`乗した値を返却します。
 ///
-pub fn power<T>(num: T, index: u32) -> T
+pub fn power<T>(base: T, index: u32) -> T
 where
     T: Num + Copy,
 {
     match index {
-        i if i == 1 => num,
-        i if i % 2 == 0 => squared(power(num, i / 2)),
-        i if i % 2 == 1 => squared(power(num, i / 2)) * num,
-        _ => num,
+        i if i == 1 => base,
+        i if i % 2 == 0 => squared(power(base, i / 2)),
+        i if i % 2 == 1 => squared(power(base, i / 2)) * base,
+        _ => base,
     }
+}
+
+#[cfg(test)]
+mod exponentiation_test {
+    use super::*;
+
+    #[test]
+    fn display() {
+        let exp = Exponentiation {
+            base: 3,
+            exponent: 4,
+        };
+        let text = format!("{}", exp);
+        assert_eq!(text, "3^4");
+    }
+
+
+    #[test]
+    fn calc_result() {
+        let exp = Exponentiation {
+            base: 2,
+            exponent: 4,
+        };
+        assert_eq!(exp.calc_result(), 16);
+        let exp = Exponentiation {
+            base: 2,
+            exponent: 10,
+        };
+        assert_eq!(exp.calc_result(), 1024)
+    }
+
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
-
-    #[test]
-    fn display() {
-        let fraction = Exponentiation {
-            base: 3,
-            exponent: 4,
-        };
-        let text = format!("{}", fraction);
-        assert_eq!(text, "3^4");
-    }
 
     #[test]
     fn squared_test() {
